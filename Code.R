@@ -139,4 +139,59 @@ gene_id <- Genes[135]
 barplot(gene_135_m,  main= gene_id, xlab="", ylab="Gene expression (log[FPKM])", las = 2, cex.names = 0.7, col = "red")
 
 
+#Convert dataframe (with log values) into a matrix
+﻿log_df1 <- as.matrix(log_df) 
+#Draw histogram, breaks represents the bins 
+﻿hist(log_df1,  main= "Histogram for all samples" , xlab= "samples" , breaks= 80 , col=rainbow( 11 ))
+
+
+#Extract the sample 
+﻿Non_malignant <- as.matrix(log_df[ 1 ])
+
+#Draw histogram 
+﻿hist(Non_malignant, col= "blue" )
+
+#Extract sample 
+﻿Claudin_low <- as.matrix(log_df[6])
+
+#Plot histogram for claudin- low samples 
+﻿hist(Claudin_low, col="blue")
+
+#Extract desired  samples, here, we are extracting sample 1 and sample 8 
+﻿sample1 <- log_df1[, 1 ]
+sample2 <- log_df1[, 8 ]
+
+#Define colors for histogram 
+﻿col1 <- rgb( 0 , 0 , 1 , 0.5 )
+col2 <- rgb( 1 , 0 , 0 , 0.5 )
+
+
+#Draw histograms 
+﻿hist(sample1, col=col1, main = "Histograms of two samples", xlab= "", breaks= 200 )
+hist(sample2, col=col2, main= "", xlab= "", breaks= 200 , add=T)
+
+#Add density for each sample 
+﻿d1 <- density(sample1)
+d2 <- density(sample2)
+
+#Plot Density plot 
+﻿plot(d2, col="red")
+polygon(d2, col=col2, border=col2)
+lines(d1, col="blue" )
+polygon(d1, col=col1, border=col1)
+
+# Transform dataframe into a matrix
+df_mat <- as.matrix(df1)
+#Create heatmap
+heatmap(df_mat, cexCol= 0.8 )
+
+#Convert into a matrix
+df_log_mat <- as.matrix(log_df)
+
+#Plot heatmap
+heatmap(df_log_mat, cexCol= 0.8)
+
+
+
+
 
