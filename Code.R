@@ -193,4 +193,85 @@ heatmap(df_log_mat, cexCol= 0.8)
 
 
 
+#Load libraries 
+﻿library(ggplot2) 
+﻿library(reshape2)
+
+
+df <- read.table( "data.txt", header=TRUE,  sep="\t" , row.names= 1 )
+
+
+#Remove "NA" values from the data 
+﻿df1 <- na.exclude(df) 
+#check the dimensions of data 
+﻿dim(df1)
+
+#Compute summary statistics of data 
+﻿summ = summary(df1)
+
+#print summary statistics 
+﻿print(summ)
+
+
+#Write summary statistics  into a file 
+﻿write.table(summ, file= "stat_sum.txt", col.names=TRUE, sep= "\t" )
+
+#Change the dataframe into long data frame format (which will be used by ggplot) 
+﻿df_f<- melt(df1)
+
+
+#Draw Boxplot using ggplot function 
+﻿b <- ggplot(df_f, aes(factor(variable), value)) + geom_boxplot(aes(fill = variable))
+
+#Add axis title, legend title and adjust font size 
+﻿b + theme(legend.key.size = unit(0.9, "cm"), legend.text = element_text(color= "Black", size= 9), axis.text.x = element_text(color= "Black", size= 9, angle= 90), axis.text.y = element_text(size= 10, angle= 45)) + xlab("Samples") + ylab("Gene Expression(FPKM)") + labs(fill = "Samples")  
+
+# Transform FPKM values into log values 
+﻿log_df <- log(df1+1)
+
+#Descriptive statistics  
+﻿log_summary <- summary(log_df)
+
+
+#write into a file 
+﻿write.table(log_summary, file= "stat_log_sum.txt" , col.names=TRUE, sep= "\t")
+
+# Reshape or transform data into a long data frame format 
+﻿df_log <- melt(log_df)
+
+
+#Draw ﻿boxplot 
+p <- ggplot(df_log, aes(factor(variable), value))  + geom_boxplot(aes(fill = variable))
+
+#Add axis title, legend title and adjust font size 
+﻿p + theme(legend.key.size = unit(0.9 , "cm"), legend.text = element_text(color= "Black", size= 9), axis.text.x = element_text( color= "Black", size= 9, angle= 90), axis.text.y = element_text(size= 10, angle= 45)) + xlab("Samples") + ylab("Gene Expression(Log[FPKM])" ) + labs(fill = "Samples")  
+
+#Extract samples belong to each group with name 
+﻿Non_ML1<- as.data.frame(log_df[grep('^Non', names(log_df))])
+Claudin1 <- as.data.frame(log_df[grep('^Claudin', names(log_df))])
+
+#Compute the mean of samples for each gene within each group 
+﻿Non_ML<- rowMeans(Non_ML1)
+Claudin <- rowMeans(Claudin1)
+
+#Bind groups together column-wise 
+﻿group <- cbind(Non_ML, Claudin)
+
+#Provide the column names to both groups of samples 
+﻿colnames(group) <- c("Non-malignant", "Claudin-low")
+
+#Create a long formatted dataframe 
+﻿df_group <- melt(group)
+head(df_group)
+
+
+#Draw boxplot  
+﻿pp <- ggplot(df_group, aes(factor(Var2), value)) + geom_boxplot(aes(fill = Var2))
+
+#Add axis title, legend title and adjust font size 
+﻿pp + theme(legend.key.size = unit(0.9, "cm"), legend.text = element_text(color= "Black", size= 9), axis.text.x= element_text(color= "Black" , size= 9, angle=90), axis.text.y = element_text(size= 10 , angle= 45)) + xlab("Groups") + ylab("Gene Expression (Log[FPKM])") + labs(fill = "Group") 
+
+
+
+
 
