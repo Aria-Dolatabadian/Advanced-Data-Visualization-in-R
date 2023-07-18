@@ -198,7 +198,7 @@ heatmap(df_log_mat, cexCol= 0.8)
 ﻿library(reshape2)
 
 
-df <- read.table( "data.txt", header=TRUE,  sep="\t" , row.names= 1 )
+df <- read.table( "data2.txt", header=TRUE,  sep="\t" , row.names= 1 )
 
 
 #Remove "NA" values from the data 
