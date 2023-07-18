@@ -30,7 +30,6 @@ print(summ)
 # Write summary statistics of data  into a file and export it
 write.table(summ, file="data.txt", col.names=TRUE, sep="\t")
 
-
 #Box plot
 
 # Draw boxplot for all samples (for FPKM values)
