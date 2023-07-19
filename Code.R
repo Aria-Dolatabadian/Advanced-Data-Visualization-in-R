@@ -106,7 +106,6 @@ s3_4 <- cbind(sample3,sample4)
 # Draw Scatter Plot
 plot(s3_4)
 
-
 # draw scatter plot for whole data (with FPKM values)
 plot(df1)
 
